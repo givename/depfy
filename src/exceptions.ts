@@ -24,6 +24,17 @@ export class DepfyReplacementDuplicateError extends DepfyError {
   }
 }
 
+export class DepfyAlreadyImplementedError extends DepfyError {
+  constructor(
+    public replaceable: ErrorInjectedInfo,
+    public implemented: ErrorInjectedInfo
+  ) {
+    super(
+      `dependency ${implemented.name}::${implemented.token} already implemented for ${replaceable.name}::${replaceable.token}`
+    );
+  }
+}
+
 export class DepfyCycleDependencyError extends DepfyError {
   constructor(public cyclePath: [string, string][], message: string) {
     super(message);

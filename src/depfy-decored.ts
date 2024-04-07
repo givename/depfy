@@ -1,4 +1,4 @@
-import * as Depfy from "./depfy";
+import * as depfy from "./depfy";
 import { DI_MEMORY } from "./memory";
 import {
   DepfyCatchedError,
@@ -9,8 +9,10 @@ import {
 const depfyExtendCleaner = () => {
   DI_MEMORY.IS_CLEANDED = true;
   DI_MEMORY.FACTORIES.clear();
+  DI_MEMORY.IMPLEMENTED.clear();
 
   (DI_MEMORY.FACTORIES as any) = null;
+  (DI_MEMORY.IMPLEMENTED as any) = null;
 };
 
 const assertMemoryAllowed = () => {
@@ -50,8 +52,8 @@ const decoratorDepfyErrorHandler = <F extends (...args: any[]) => any>(
   }) as any as F;
 };
 
-export const injectable = decoratorDepfyErrorHandler(Depfy.injectable);
-export const replaceable = decoratorDepfyErrorHandler(Depfy.replaceable);
-export const replacement = decoratorDepfyErrorHandler(Depfy.replacement);
-export const resolver = decoratorDepfyErrorHandler(Depfy.resolver);
+export const injectable = decoratorDepfyErrorHandler(depfy.injectable);
+export const replaceable = decoratorDepfyErrorHandler(depfy.replaceable);
+export const replacement = decoratorDepfyErrorHandler(depfy.replacement);
+export const resolver = decoratorDepfyErrorHandler(depfy.resolver);
 export const cleaner = decoratorDepfyErrorHandler(depfyExtendCleaner);

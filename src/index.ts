@@ -13,6 +13,7 @@ export {
   DepfyCycleDependencyError,
   DepfyReplacementDuplicateError,
   DepfyCatchedError,
+  DepfyAlreadyImplementedError,
 } from "./exceptions";
 
 export {

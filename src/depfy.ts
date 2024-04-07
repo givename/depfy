@@ -5,6 +5,7 @@ import { DI_MEMORY } from "./memory";
 import { DI_INJECTED, DI_OPTIONS, DI_REPLACEMENT } from "./constants";
 
 import {
+  DepfyAlreadyImplementedError,
   DepfyCycleDependencyError,
   DepfyReplacebleNotImplementedError,
   DepfyReplacementDuplicateError,
@@ -28,6 +29,7 @@ export function injectable<
   name?: string;
   options?: _O;
   dependencies?: _D;
+  implemented?: InjectedDescriptor<_T, _O>;
   factory?: (props: {
     token: string;
     name: string;
@@ -35,13 +37,30 @@ export function injectable<
     dependencies: InferInjectedDependencies<_D>;
   }) => _T | Promise<_T>;
 }): InjectedDescriptor<_T, _O> {
-  const token = uuid.v4();
+  const maybeImplementedToken = props.implemented?.token;
+  const maybeImplementedName = props.implemented?.name;
+
+  const token = maybeImplementedToken ?? uuid.v4();
   const {
-    name = token,
+    name = maybeImplementedName ?? token,
     dependencies = {},
     factory = identity,
     options,
   } = props;
+
+  if (maybeImplementedToken) {
+    if (DI_MEMORY.IMPLEMENTED.has(maybeImplementedToken)) {
+      throw new DepfyAlreadyImplementedError(
+        {
+          token: maybeImplementedToken!,
+          name: maybeImplementedName!,
+        },
+        { token, name }
+      );
+    }
+
+    DI_MEMORY.IMPLEMENTED.add(maybeImplementedToken);
+  }
 
   DI_MEMORY.FACTORIES.set(token, {
     name,
@@ -53,11 +72,11 @@ export function injectable<
   return {
     name,
     token,
-    clone({ name, options }) {
+    clone(params) {
       return injectable({
         ...props,
-        name: name ?? props.name,
-        options: options ?? props.options,
+        name: params.name ?? name,
+        options: params.options ?? options,
       });
     },
     [DI_OPTIONS]: options as _O,
@@ -198,28 +217,31 @@ export function replacement<
     _D
   >
 >(props: {
-  injected: _I;
+  implemented: _I;
   factory: _InjectorTypes["factory"];
   name?: string;
   dependencies?: _D;
 }): ReplacementInjectedDescriptor<_I, _InjectorTypes["options"]> {
   return {
-    injected: props.injected,
+    injected: props.implemented,
     [DI_REPLACEMENT]: injectable({
       name: props.name,
       dependencies: props.dependencies,
       factory: props.factory,
-      options: props.injected[DI_OPTIONS],
+      options: props.implemented[DI_OPTIONS],
     }),
   };
 }
 
 export function replaceable<T, O = undefined>(
-  props: { name?: string } & (O extends undefined ? {} : { options: O })
+  ...args: O extends undefined
+    ? [props?: { name?: string }]
+    : [props: { name?: string } & { options: O }]
 ) {
+  const props = args[0];
   return injectable<O, {}, T>({
-    name: props.name,
-    options: "options" in props ? props.options : undefined,
+    name: props?.name,
+    options: props && "options" in props ? props?.options : undefined,
     factory: ({ token, name }) => {
       throw new DepfyReplacebleNotImplementedError({
         name,

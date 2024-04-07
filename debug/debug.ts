@@ -16,7 +16,7 @@ const TvInterface = replaceable<
 
 const TvImpl = replacement({
   name: "TvImpl",
-  injected: TvInterface,
+  implemented: TvInterface,
   factory: ({ options }) => {
     return {
       tv: `${options.prefix} anything`,
@@ -60,7 +60,7 @@ const serviceAForked = serviceA.clone({
 
 const replacedServiceAForker = replacement({
   name: "replacedServiceAForker",
-  injected: serviceAForked,
+  implemented: serviceAForked,
   dependencies: {
     vars,
   },
@@ -97,7 +97,7 @@ const sdfsdf = injectable({
 
 const replacedServices = replacement({
   name: "replacedServices",
-  injected: sdfsdf,
+  implemented: sdfsdf,
   async factory() {
     return {
       empty: {},
