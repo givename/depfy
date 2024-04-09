@@ -1,3 +1,6 @@
+import { resolver } from "./depfy-decored";
+import { InjectedDescriptor } from "./types";
+
 export {
   injectable,
   replaceable,
@@ -22,3 +25,8 @@ export {
   InferInjectedDependency,
   InferInjectedDependencies,
 } from "./types";
+
+export type InferResolver<T extends InjectedDescriptor> =
+  T extends InjectedDescriptor<infer I>
+    ? Awaited<ReturnType<typeof resolver<I>>>
+    : never;

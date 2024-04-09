@@ -29,7 +29,7 @@ export function injectable<
   name?: string;
   options?: _O;
   dependencies?: _D;
-  implemented?: InjectedDescriptor<_T, _O>;
+  replaceable?: InjectedDescriptor<_T, _O>;
   factory?: (props: {
     token: string;
     name: string;
@@ -37,8 +37,8 @@ export function injectable<
     dependencies: InferInjectedDependencies<_D>;
   }) => _T | Promise<_T>;
 }): InjectedDescriptor<_T, _O> {
-  const maybeImplementedToken = props.implemented?.token;
-  const maybeImplementedName = props.implemented?.name;
+  const maybeImplementedToken = props.replaceable?.token;
+  const maybeImplementedName = props.replaceable?.name;
 
   const token = maybeImplementedToken ?? uuid.v4();
   const {
@@ -217,18 +217,18 @@ export function replacement<
     _D
   >
 >(props: {
-  implemented: _I;
+  replaceable: _I;
   factory: _InjectorTypes["factory"];
   name?: string;
   dependencies?: _D;
 }): ReplacementInjectedDescriptor<_I, _InjectorTypes["options"]> {
   return {
-    injected: props.implemented,
+    injected: props.replaceable,
     [DI_REPLACEMENT]: injectable({
       name: props.name,
       dependencies: props.dependencies,
       factory: props.factory,
-      options: props.implemented[DI_OPTIONS],
+      options: props.replaceable[DI_OPTIONS],
     }),
   };
 }

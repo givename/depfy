@@ -1,13 +1,9 @@
-import * as depfy from  "../../src";
+const depfy = require('../../src')
 
-import UserInterfaceServiceProvider from "./user.interface-service";
+const DatabaseProvider = require('./database.provider')
 
-import DatabaseProvider from "./database.provider";
-import { User } from "./types";
-
-export default depfy.injectable({
+module.exports = depfy.injectable({
   name: "User service",
-  replaceable: UserInterfaceServiceProvider,
   dependencies: {
     database: DatabaseProvider,
   },
@@ -17,10 +13,17 @@ export default depfy.injectable({
     // }
 
     return {
-      async findAll(): Promise<User[]> {
+      /**
+       * @returns {Promise<User[]>}
+       */
+      async findAll() {
         throw new Error("dependencies.database is not implemented");
       },
-      async insert(payload: Omit<User, "id">): Promise<User> {
+      /**
+       * @param {Omit<User, 'id'>} payload 
+       * @returns {Promise<User>}
+       */
+      async insert(payload) {
         throw new Error("dependencies.database is not implemented");
       },
     };

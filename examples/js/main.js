@@ -1,12 +1,10 @@
-import * as depfy from "../../src";
+const depfy = require('../../src')
 
-import AppProvider from "./app.provider";
-import UserMockServiceProvider from "./user.mock-service";
-
-type AppContext = depfy.InferResolver<typeof AppProvider>;
+const AppProvider = require('./app.provider')
+const UserMockServiceProvider = require('./user.mock-service')
 
 async function bootstrap_prod() {
-  const appContex: AppContext = await depfy.resolver({
+  const appContex = await depfy.resolver({
     dependency: AppProvider,
   });
 
@@ -14,7 +12,7 @@ async function bootstrap_prod() {
 }
 
 async function bootstrap_dev() {
-  const appContex: AppContext = await depfy.resolver({
+  const appContex = await depfy.resolver({
     dependency: AppProvider,
     replacements: [UserMockServiceProvider],
   });

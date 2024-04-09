@@ -6,7 +6,7 @@ import { User } from "./types";
 
 export default depfy.replacement({
   name: "Mock [User service]",
-  implemented: UserInterfaceServiceProvider,
+  replaceable: UserInterfaceServiceProvider,
   async factory() {
     return new (class {
       private users: User[] = [];
