@@ -1,7 +1,8 @@
 # Install from npm
 ```bash
 npm i depfy
-
+```
+```bash
 yarn add depfy
 ```
 
