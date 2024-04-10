@@ -1,3 +1,11 @@
+# Install from npm
+```bash
+npm i depfy
+
+yarn add depfy
+```
+
+
 # Minimalistic dependency injection mechanism
 
 - Very easy to use
