@@ -1,6 +1,6 @@
 {
   "name": "depfy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "minimalistic dependency injection mechanism",
   "main": "index.js",
   "types": "build/index.d.ts",
@@ -16,12 +16,10 @@
   ],
   "author": "",
   "dependencies": {
-    "dependency-graph": "^1.0.0",
-    "uuid": "^9.0.1"
+    "dependency-graph": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.12.5",
-    "@types/uuid": "^9.0.8",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2"
   },
@@ -30,5 +28,9 @@
     "type": "git",
     "url": "git+https://github.com/givename/depfy.git"
   },
-  "homepage": "https://github.com/givename/depfy/blob/main/README.md"
+  "homepage": "https://github.com/givename/depfy/blob/main/README.md",
+  "files": [
+    "index.js",
+    "build/"
+  ]
 }

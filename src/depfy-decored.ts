@@ -13,6 +13,7 @@ const depfyExtendCleaner = () => {
 
   (DI_MEMORY.FACTORIES as any) = null;
   (DI_MEMORY.IMPLEMENTED as any) = null;
+  (DI_MEMORY.COUNTER as any) = null;
 };
 
 const assertMemoryAllowed = () => {

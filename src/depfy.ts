@@ -1,4 +1,3 @@
-import * as uuid from "uuid";
 import * as dgraph from "dependency-graph";
 
 import { DI_MEMORY } from "./memory";
@@ -40,7 +39,7 @@ export function injectable<
   const maybeImplementedToken = props.replaceable?.token;
   const maybeImplementedName = props.replaceable?.name;
 
-  const token = maybeImplementedToken ?? uuid.v4();
+  const token = maybeImplementedToken ?? `inc:${DI_MEMORY.COUNTER.value++}`;
   const {
     name = maybeImplementedName ?? token,
     dependencies = {},
